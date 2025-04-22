@@ -3,6 +3,22 @@ from bs4 import BeautifulSoup
 import pushbullet
 import telegram_notify
 import datetime
+import time
+
+def fetch_nvidia_page(url, headers, retries=3, delay=5):
+    for attempt in range(1, retries + 1):
+        try:
+            response = requests.get(url, headers=headers, timeout=10)
+            response.raise_for_status()
+            return response
+        except requests.exceptions.RequestException as e:
+            log(f"⚠️ Attempt {attempt} failed: {e}")
+            if attempt < retries:
+                log(f"Retrying in {delay} seconds...")
+                time.sleep(delay)
+            else:
+                log("❌ All retries failed. Giving up.")
+                return None
 
 def log(message):
     print(f"[{datetime.datetime.now().isoformat()}] {message}")
@@ -14,7 +30,9 @@ def check_stock():
     }
 
     log("Requesting NVIDIA page...")
-    response = requests.get(url, headers=headers)
+    response = fetch_nvidia_page(url, headers)
+    if response is None:
+        return
     if response.status_code != 200:
         log(f"Failed to fetch page: {response.status_code}")
         return
