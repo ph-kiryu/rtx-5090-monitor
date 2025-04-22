@@ -17,5 +17,3 @@ This GitHub Action monitors the NVIDIA Germany marketplace for RTX 5090 Founders
    - `TELEGRAM_TOKEN` (optional)
    - `TELEGRAM_CHAT_ID` (optional)
 3. Enable Actions in your repo
-
-That's it — you'll get alerts when stock appears.
