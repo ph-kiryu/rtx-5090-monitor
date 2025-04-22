@@ -12,6 +12,11 @@ def check_stock():
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, 'html.parser')
 
+    print("Checking stock...")
+    print("Status code:", response.status_code)
+    print("Page length:", len(response.text))
+    print("First 500 characters:\n", response.text[:500])
+    
     # Check for any product card not showing "Nicht auf Lager"
     in_stock = False
     for card in soup.find_all("div", class_="product-tile"):
